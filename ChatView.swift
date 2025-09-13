@@ -7,33 +7,42 @@ struct ChatView: View {
     
     var body: some View {
         ZStack {
-            // Background Gradient
-            LinearGradient.subtleGradient
+            // Clean Background
+            DesignSystem.Colors.background
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Messages Area
                 ScrollViewReader { proxy in
                     ScrollView {
-                        LazyVStack(spacing: DesignSystem.Spacing.md) {
+                        LazyVStack(spacing: DesignSystem.Spacing.lg) {
                             // Welcome Message (if no messages)
                             if chatManager.messages.isEmpty {
-                                VStack(spacing: DesignSystem.Spacing.lg) {
-                                    Image(systemName: "brain.head.profile")
-                                        .font(.system(size: 60, weight: .light))
-                                        .foregroundColor(DesignSystem.Colors.primary.opacity(0.6))
+                                VStack(spacing: DesignSystem.Spacing.xl) {
+                                    // Clean Icon
+                                    ZStack {
+                                        Circle()
+                                            .fill(DesignSystem.Colors.primary.opacity(0.1))
+                                            .frame(width: 80, height: 80)
+                                        
+                                        Image(systemName: "sparkles")
+                                            .font(.system(size: 32, weight: .light))
+                                            .foregroundColor(DesignSystem.Colors.primary)
+                                    }
                                     
-                                    Text("Willkommen bei LLM Chat")
-                                        .font(DesignSystem.Typography.title2)
-                                        .foregroundColor(DesignSystem.Colors.primaryText)
-                                    
-                                    Text("Stellen Sie Ihre Fragen und erhalten Sie intelligente Antworten")
-                                        .font(DesignSystem.Typography.body)
-                                        .foregroundColor(DesignSystem.Colors.secondaryText)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal, DesignSystem.Spacing.xl)
+                                    VStack(spacing: DesignSystem.Spacing.sm) {
+                                        Text("Willkommen")
+                                            .font(DesignSystem.Typography.title2)
+                                            .foregroundColor(DesignSystem.Colors.primaryText)
+                                        
+                                        Text("Stellen Sie Ihre Fragen und erhalten Sie intelligente Antworten")
+                                            .font(DesignSystem.Typography.body)
+                                            .foregroundColor(DesignSystem.Colors.secondaryText)
+                                            .multilineTextAlignment(.center)
+                                            .padding(.horizontal, DesignSystem.Spacing.xxxl)
+                                    }
                                 }
-                                .padding(.top, DesignSystem.Spacing.xxxl)
+                                .padding(.top, DesignSystem.Spacing.xxxxl)
                             }
                             
                             // Messages
@@ -52,8 +61,8 @@ struct ChatView: View {
                                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                             }
                         }
-                        .padding(.horizontal, DesignSystem.Spacing.lg)
-                        .padding(.vertical, DesignSystem.Spacing.md)
+                        .padding(.horizontal, DesignSystem.Spacing.xl)
+                        .padding(.vertical, DesignSystem.Spacing.lg)
                     }
                     .onChange(of: chatManager.messages.count) { _ in
                         if let lastMessage = chatManager.messages.last {
@@ -64,10 +73,12 @@ struct ChatView: View {
                     }
                 }
                 
-                // Input Area
+                // Clean Input Area
                 VStack(spacing: 0) {
-                    Divider()
-                        .background(DesignSystem.Colors.tertiaryText.opacity(0.3))
+                    // Subtle Divider
+                    Rectangle()
+                        .fill(DesignSystem.Colors.borderLight)
+                        .frame(height: 1)
                     
                     HStack(spacing: DesignSystem.Spacing.md) {
                         // Text Input
@@ -76,40 +87,31 @@ struct ChatView: View {
                                 .font(DesignSystem.Typography.body)
                                 .focused($isTextFieldFocused)
                                 .lineLimit(1...4)
-                                .padding(.horizontal, DesignSystem.Spacing.lg)
-                                .padding(.vertical, DesignSystem.Spacing.md)
-                                .background(
-                                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.large)
-                                        .fill(DesignSystem.Colors.secondaryBackground)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.large)
-                                                .stroke(DesignSystem.Colors.primary.opacity(0.2), lineWidth: 1)
-                                        )
-                                )
+                                .cleanInputStyle()
                                 .onSubmit {
                                     sendMessage()
                                 }
                             
-                            // Send Button
+                            // Clean Send Button
                             Button(action: sendMessage) {
                                 ZStack {
                                     Circle()
-                                        .fill(messageText.isEmpty ? DesignSystem.Colors.tertiaryText.opacity(0.3) : DesignSystem.Colors.primary)
-                                        .frame(width: 44, height: 44)
+                                        .fill(messageText.isEmpty ? DesignSystem.Colors.border : DesignSystem.Colors.primary)
+                                        .frame(width: 40, height: 40)
                                     
                                     Image(systemName: "arrow.up")
-                                        .font(.system(size: 16, weight: .semibold))
+                                        .font(.system(size: 14, weight: .semibold))
                                         .foregroundColor(messageText.isEmpty ? DesignSystem.Colors.tertiaryText : .white)
                                 }
                             }
                             .disabled(messageText.isEmpty || chatManager.isLoading)
-                            .scaleEffect(messageText.isEmpty ? 0.9 : 1.0)
-                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: messageText.isEmpty)
+                            .scaleEffect(messageText.isEmpty ? 0.95 : 1.0)
+                            .animation(.spring(response: 0.2, dampingFraction: 0.8), value: messageText.isEmpty)
                         }
                     }
-                    .padding(.horizontal, DesignSystem.Spacing.lg)
-                    .padding(.vertical, DesignSystem.Spacing.md)
-                    .background(DesignSystem.Colors.background)
+                    .padding(.horizontal, DesignSystem.Spacing.xl)
+                    .padding(.vertical, DesignSystem.Spacing.lg)
+                    .background(DesignSystem.Colors.secondaryBackground)
                 }
             }
         }
@@ -145,45 +147,46 @@ struct ChatView: View {
     }
 }
 
-// MARK: - Loading Message View
+// MARK: - Clean Loading Message View
 struct LoadingMessageView: View {
     @State private var animationOffset: CGFloat = 0
     
     var body: some View {
         HStack(alignment: .top, spacing: DesignSystem.Spacing.md) {
-            // Loading Avatar
+            // Clean Loading Avatar
             Circle()
                 .fill(DesignSystem.Colors.primary.opacity(0.1))
-                .frame(width: 40, height: 40)
+                .frame(width: 36, height: 36)
                 .overlay(
-                    Image(systemName: "brain.head.profile")
-                        .font(.system(size: 18, weight: .medium))
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 16, weight: .light))
                         .foregroundColor(DesignSystem.Colors.primary)
                 )
             
             VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
-                Text("LLM")
+                Text("AI")
                     .font(DesignSystem.Typography.caption)
                     .fontWeight(.semibold)
                     .foregroundColor(DesignSystem.Colors.primary)
                 
                 HStack(spacing: DesignSystem.Spacing.sm) {
-                    HStack(spacing: 4) {
+                    // Clean Loading Dots
+                    HStack(spacing: 3) {
                         ForEach(0..<3) { index in
                             Circle()
-                                .fill(DesignSystem.Colors.primary)
-                                .frame(width: 6, height: 6)
-                                .scaleEffect(animationOffset == index ? 1.2 : 0.8)
+                                .fill(DesignSystem.Colors.primary.opacity(0.6))
+                                .frame(width: 4, height: 4)
+                                .scaleEffect(animationOffset == index ? 1.3 : 0.7)
                                 .animation(
-                                    .easeInOut(duration: 0.6)
+                                    .easeInOut(duration: 0.8)
                                     .repeatForever(autoreverses: true)
-                                    .delay(Double(index) * 0.2),
+                                    .delay(Double(index) * 0.3),
                                     value: animationOffset
                                 )
                         }
                     }
                     
-                    Text("LLM denkt nach...")
+                    Text("Denkt nach...")
                         .font(DesignSystem.Typography.body)
                         .foregroundColor(DesignSystem.Colors.secondaryText)
                 }
@@ -191,7 +194,7 @@ struct LoadingMessageView: View {
             
             Spacer()
         }
-        .padding(.horizontal, DesignSystem.Spacing.lg)
+        .padding(.horizontal, DesignSystem.Spacing.xl)
         .padding(.vertical, DesignSystem.Spacing.md)
         .onAppear {
             animationOffset = 0

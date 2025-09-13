@@ -13,78 +13,58 @@ struct ContentView: View {
                     .environmentObject(chatManager)
             }
             .overlay(
-                // Floating Action Buttons with Black Background
+                // Clean Floating Action Buttons
                 VStack {
-                    // Black Background Area
                     HStack {
-                        Spacer()
-                    }
-                    .frame(height: 100)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.black.opacity(0.8), Color.black.opacity(0.4), Color.clear],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    
-                    Spacer()
-                }
-                .overlay(
-                    // Floating Action Buttons
-                    VStack {
-                        HStack {
-                            // Sidebar Toggle Button
-                            Button(action: {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0.2)) {
-                                    showingSidebar.toggle()
-                                }
-                                // Tastatur ausblenden
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            }) {
-                                ZStack {
-                                    Circle()
-                                        .fill(DesignSystem.Colors.primary)
-                                        .frame(width: 50, height: 50)
-                                        .shadow(color: DesignSystem.Shadows.medium.color, radius: DesignSystem.Shadows.medium.radius, x: 0, y: DesignSystem.Shadows.medium.y)
-                                    
-                                    Image(systemName: showingSidebar ? "xmark" : "line.3.horizontal")
-                                        .font(.system(size: 18, weight: .semibold))
-                                        .foregroundColor(.white)
-                                }
+                        // Clean Sidebar Toggle Button
+                        Button(action: {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                showingSidebar.toggle()
                             }
-                            .scaleEffect(showingSidebar ? 1.1 : 1.0)
-                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: showingSidebar)
-                            
-                            Spacer()
-                            
-                            // New Conversation Button
-                            Button(action: {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    chatManager.createNewConversation()
-                                }
-                            }) {
-                                ZStack {
-                                    Circle()
-                                        .fill(DesignSystem.Colors.primary)
-                                        .frame(width: 50, height: 50)
-                                        .shadow(color: DesignSystem.Shadows.medium.color, radius: DesignSystem.Shadows.medium.radius, x: 0, y: DesignSystem.Shadows.medium.y)
-                                    
-                                    Image(systemName: "plus")
-                                        .font(.system(size: 18, weight: .semibold))
-                                        .foregroundColor(.white)
-                                }
+                            // Tastatur ausblenden
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(DesignSystem.Colors.secondaryBackground)
+                                    .frame(width: 44, height: 44)
+                                    .shadow(color: DesignSystem.Shadows.medium.color, radius: DesignSystem.Shadows.medium.radius, x: 0, y: DesignSystem.Shadows.medium.y)
+                                
+                                Image(systemName: showingSidebar ? "xmark" : "line.3.horizontal")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(DesignSystem.Colors.primary)
                             }
-                            .scaleEffect(1.0)
-                            .animation(.spring(response: 0.2, dampingFraction: 0.5), value: chatManager.currentConversation?.id)
                         }
-                        .padding(.horizontal, DesignSystem.Spacing.xl)
-                        .padding(.top, DesignSystem.Spacing.lg)
+                        .scaleEffect(showingSidebar ? 1.05 : 1.0)
+                        .animation(.spring(response: 0.2, dampingFraction: 0.8), value: showingSidebar)
                         
                         Spacer()
-                    },
-                    alignment: .top
-                ),
+                        
+                        // Clean New Conversation Button
+                        Button(action: {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                chatManager.createNewConversation()
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(DesignSystem.Colors.primary)
+                                    .frame(width: 44, height: 44)
+                                    .shadow(color: DesignSystem.Shadows.medium.color, radius: DesignSystem.Shadows.medium.radius, x: 0, y: DesignSystem.Shadows.medium.y)
+                                
+                                Image(systemName: "plus")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.2, dampingFraction: 0.8), value: chatManager.currentConversation?.id)
+                    }
+                    .padding(.horizontal, DesignSystem.Spacing.xl)
+                    .padding(.top, DesignSystem.Spacing.xl)
+                    
+                    Spacer()
+                },
                 alignment: .top
             )
             

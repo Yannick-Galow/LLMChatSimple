@@ -14,21 +14,21 @@ struct SidebarView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            LinearGradient.subtleGradient
+            // Clean Background
+            DesignSystem.Colors.background
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Header
-                VStack(spacing: DesignSystem.Spacing.md) {
+                // Clean Header
+                VStack(spacing: DesignSystem.Spacing.lg) {
                     HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("LLM Chat")
+                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                            Text("Chats")
                                 .font(DesignSystem.Typography.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(DesignSystem.Colors.primaryText)
                             
-                            Text("Intelligente Gespräche")
+                            Text("\(chatManager.conversations.count) Unterhaltungen")
                                 .font(DesignSystem.Typography.caption)
                                 .foregroundColor(DesignSystem.Colors.secondaryText)
                         }
@@ -43,46 +43,53 @@ struct SidebarView: View {
                             ZStack {
                                 Circle()
                                     .fill(DesignSystem.Colors.primary.opacity(0.1))
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 36, height: 36)
                                 
                                 Image(systemName: "gear")
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(DesignSystem.Colors.primary)
                                     .rotationEffect(.degrees(showingSettings ? 180 : 0))
                                     .animation(.spring(response: 0.4, dampingFraction: 0.6), value: showingSettings)
                             }
                         }
                     }
-                    .padding(.horizontal, DesignSystem.Spacing.lg)
-                    .padding(.top, DesignSystem.Spacing.lg)
+                    .padding(.horizontal, DesignSystem.Spacing.xl)
+                    .padding(.top, DesignSystem.Spacing.xl)
                 }
-                .background(DesignSystem.Colors.background)
-                .shadow(color: DesignSystem.Shadows.small.color, radius: DesignSystem.Shadows.small.radius, x: 0, y: 2)
+                .background(DesignSystem.Colors.secondaryBackground)
                 
-                Divider()
-                    .background(DesignSystem.Colors.tertiaryText.opacity(0.3))
+                // Clean Divider
+                Rectangle()
+                    .fill(DesignSystem.Colors.borderLight)
+                    .frame(height: 1)
             
-                // Conversations List
+                // Clean Conversations List
                 if chatManager.conversations.isEmpty {
-                    VStack(spacing: DesignSystem.Spacing.lg) {
-                        Image(systemName: "bubble.left.and.bubble.right")
-                            .font(.system(size: 60, weight: .light))
-                            .foregroundColor(DesignSystem.Colors.primary.opacity(0.4))
+                    VStack(spacing: DesignSystem.Spacing.xl) {
+                        // Clean Empty State
+                        ZStack {
+                            Circle()
+                                .fill(DesignSystem.Colors.primary.opacity(0.08))
+                                .frame(width: 80, height: 80)
+                            
+                            Image(systemName: "bubble.left.and.bubble.right")
+                                .font(.system(size: 32, weight: .light))
+                                .foregroundColor(DesignSystem.Colors.primary)
+                        }
                         
                         VStack(spacing: DesignSystem.Spacing.sm) {
-                            Text("Keine Unterhaltungen")
+                            Text("Keine Chats")
                                 .font(DesignSystem.Typography.headline)
                                 .foregroundColor(DesignSystem.Colors.primaryText)
                             
-                            Text("Tippen Sie auf das + Symbol, um eine neue Unterhaltung zu beginnen")
+                            Text("Tippen Sie auf + um zu beginnen")
                                 .font(DesignSystem.Typography.caption)
                                 .foregroundColor(DesignSystem.Colors.secondaryText)
                                 .multilineTextAlignment(.center)
-                                .padding(.horizontal, DesignSystem.Spacing.lg)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.top, DesignSystem.Spacing.xxxl)
+                    .padding(.top, DesignSystem.Spacing.xxxxl)
                 } else {
                     ScrollView {
                         LazyVStack(spacing: DesignSystem.Spacing.sm) {
@@ -101,8 +108,8 @@ struct SidebarView: View {
                                 )
                             }
                         }
-                        .padding(.horizontal, DesignSystem.Spacing.lg)
-                        .padding(.vertical, DesignSystem.Spacing.md)
+                        .padding(.horizontal, DesignSystem.Spacing.xl)
+                        .padding(.vertical, DesignSystem.Spacing.lg)
                     }
                 }
             
@@ -338,18 +345,18 @@ struct ConversationRowView: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: DesignSystem.Spacing.md) {
-                // Conversation Icon
+                // Clean Conversation Icon
                 ZStack {
                     Circle()
-                        .fill(isSelected ? DesignSystem.Colors.primary : DesignSystem.Colors.primary.opacity(0.1))
-                        .frame(width: 40, height: 40)
+                        .fill(isSelected ? DesignSystem.Colors.primary : DesignSystem.Colors.primary.opacity(0.08))
+                        .frame(width: 36, height: 36)
                     
                     Image(systemName: "bubble.left.and.bubble.right")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 14, weight: .medium))
                         .foregroundColor(isSelected ? .white : DesignSystem.Colors.primary)
                 }
                 
-                // Conversation Content
+                // Clean Conversation Content
                 VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                     HStack {
                         Text(conversation.title)
@@ -361,7 +368,7 @@ struct ConversationRowView: View {
                         
                         Text(timeAgo)
                             .font(DesignSystem.Typography.caption)
-                            .foregroundColor(DesignSystem.Colors.secondaryText)
+                            .foregroundColor(DesignSystem.Colors.tertiaryText)
                     }
                     
                     if let lastMessage = conversation.messages.last {
@@ -380,7 +387,7 @@ struct ConversationRowView: View {
                         
                         if isSelected {
                             Image(systemName: "checkmark.circle.fill")
-                                .font(.caption)
+                                .font(.caption2)
                                 .foregroundColor(DesignSystem.Colors.primary)
                         }
                     }
@@ -390,10 +397,10 @@ struct ConversationRowView: View {
             .padding(.horizontal, DesignSystem.Spacing.lg)
             .background(
                 RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
-                    .fill(isSelected ? DesignSystem.Colors.primary.opacity(0.1) : DesignSystem.Colors.secondaryBackground)
+                    .fill(isSelected ? DesignSystem.Colors.primary.opacity(0.08) : DesignSystem.Colors.cardBackground)
                     .overlay(
                         RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
-                            .stroke(isSelected ? DesignSystem.Colors.primary : Color.clear, lineWidth: 1)
+                            .stroke(isSelected ? DesignSystem.Colors.primary.opacity(0.2) : DesignSystem.Colors.borderLight, lineWidth: 1)
                     )
             )
             .shadow(
@@ -402,8 +409,8 @@ struct ConversationRowView: View {
                 x: 0,
                 y: isSelected ? DesignSystem.Shadows.medium.y : DesignSystem.Shadows.small.y
             )
-            .scaleEffect(isSelected ? 1.02 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+            .scaleEffect(isSelected ? 1.01 : 1.0)
+            .animation(.spring(response: 0.2, dampingFraction: 0.8), value: isSelected)
         }
         .buttonStyle(PlainButtonStyle())
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {

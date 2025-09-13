@@ -14,7 +14,7 @@ struct MessageView: View {
             if isUser {
                 Spacer()
                 
-                // User Message
+                // Clean User Message
                 VStack(alignment: .trailing, spacing: DesignSystem.Spacing.sm) {
                     // Message Bubble
                     VStack(alignment: .trailing, spacing: DesignSystem.Spacing.sm) {
@@ -25,16 +25,16 @@ struct MessageView: View {
                             .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: .trailing)
                             .multilineTextAlignment(.trailing)
                         
-                        // Copy Button and Timestamp
+                        // Clean Copy Button and Timestamp
                         HStack(spacing: DesignSystem.Spacing.sm) {
                             Button(action: copyMessage) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: showingCopyConfirmation ? "checkmark.circle.fill" : "doc.on.doc")
-                                        .font(.caption)
+                                HStack(spacing: 3) {
+                                    Image(systemName: showingCopyConfirmation ? "checkmark" : "doc.on.doc")
+                                        .font(.caption2)
                                     Text(showingCopyConfirmation ? "Kopiert!" : "Kopieren")
-                                        .font(.caption)
+                                        .font(.caption2)
                                 }
-                                .foregroundColor(DesignSystem.Colors.userMessageText.opacity(0.8))
+                                .foregroundColor(DesignSystem.Colors.userMessageText.opacity(0.7))
                                 .padding(.horizontal, DesignSystem.Spacing.sm)
                                 .padding(.vertical, DesignSystem.Spacing.xs)
                                 .background(
@@ -46,36 +46,34 @@ struct MessageView: View {
                             
                             Text(formatTime(message.timestamp))
                                 .font(DesignSystem.Typography.caption2)
-                                .foregroundColor(DesignSystem.Colors.userMessageText.opacity(0.7))
+                                .foregroundColor(DesignSystem.Colors.userMessageText.opacity(0.6))
                         }
                     }
                     .messageBubbleStyle(isUser: true)
                     .shadow(color: DesignSystem.Shadows.small.color, radius: DesignSystem.Shadows.small.radius, x: DesignSystem.Shadows.small.x, y: DesignSystem.Shadows.small.y)
                     
-                    // User Avatar
+                    // Clean User Avatar
                     Circle()
                         .fill(DesignSystem.Colors.primary)
-                        .frame(width: 32, height: 32)
+                        .frame(width: 28, height: 28)
                         .overlay(
                             Image(systemName: "person.fill")
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(.white)
                         )
-                        .shadow(color: DesignSystem.Shadows.small.color, radius: DesignSystem.Shadows.small.radius, x: DesignSystem.Shadows.small.x, y: DesignSystem.Shadows.small.y)
                 }
             } else {
-                // Assistant Message
+                // Clean Assistant Message
                 VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
-                    // Assistant Avatar
+                    // Clean Assistant Avatar
                     Circle()
                         .fill(DesignSystem.Colors.primary.opacity(0.1))
-                        .frame(width: 32, height: 32)
+                        .frame(width: 28, height: 28)
                         .overlay(
-                            Image(systemName: "brain.head.profile")
-                                .font(.system(size: 14, weight: .medium))
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 12, weight: .light))
                                 .foregroundColor(DesignSystem.Colors.primary)
                         )
-                        .shadow(color: DesignSystem.Shadows.small.color, radius: DesignSystem.Shadows.small.radius, x: DesignSystem.Shadows.small.x, y: DesignSystem.Shadows.small.y)
                     
                     // Message Bubble
                     VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
@@ -86,21 +84,21 @@ struct MessageView: View {
                             .textSelection(.enabled)
                             .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: .leading)
                         
-                        // Copy Button and Timestamp
+                        // Clean Copy Button and Timestamp
                         HStack(spacing: DesignSystem.Spacing.sm) {
                             Button(action: copyMessage) {
-                                HStack(spacing: 4) {
-                                    Image(systemName: showingCopyConfirmation ? "checkmark.circle.fill" : "doc.on.doc")
-                                        .font(.caption)
+                                HStack(spacing: 3) {
+                                    Image(systemName: showingCopyConfirmation ? "checkmark" : "doc.on.doc")
+                                        .font(.caption2)
                                     Text(showingCopyConfirmation ? "Kopiert!" : "Kopieren")
-                                        .font(.caption)
+                                        .font(.caption2)
                                 }
                                 .foregroundColor(DesignSystem.Colors.primary)
                                 .padding(.horizontal, DesignSystem.Spacing.sm)
                                 .padding(.vertical, DesignSystem.Spacing.xs)
                                 .background(
                                     RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
-                                        .fill(DesignSystem.Colors.primary.opacity(0.1))
+                                        .fill(DesignSystem.Colors.primary.opacity(0.08))
                                 )
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -109,7 +107,7 @@ struct MessageView: View {
                             
                             Text(formatTime(message.timestamp))
                                 .font(DesignSystem.Typography.caption2)
-                                .foregroundColor(DesignSystem.Colors.secondaryText)
+                                .foregroundColor(DesignSystem.Colors.tertiaryText)
                         }
                     }
                     .messageBubbleStyle(isUser: false)
@@ -119,7 +117,7 @@ struct MessageView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, DesignSystem.Spacing.lg)
+        .padding(.horizontal, DesignSystem.Spacing.xl)
         .padding(.vertical, DesignSystem.Spacing.sm)
     }
     
